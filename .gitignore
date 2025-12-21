@@ -9,6 +9,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# processed data (opsional kalau besar)
-preprocessing/housing_preprocessing/
     
