@@ -1,9 +1,17 @@
 import pandas as pd
+import os
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+raw_path = os.path.join(base_dir, "raw", "housing.csv")
+output_dir = os.path.join(base_dir, "preprocessing", "housing_preprocessing")
+output_file = os.path.join(output_dir, "housing_clean_auto.csv")
 
-df = pd.read_csv("raw/housing.csv")
+os.makedirs(output_dir, exist_ok=True)
+
+# 1. Load Data
+df = pd.read_csv(raw_path)
 
 print("1. Imputasi & Hapus Duplikat")
 imputer = SimpleImputer(strategy='mean')
@@ -14,7 +22,7 @@ num_cols = df.select_dtypes(include=['int64', 'float64']).columns
 if 'median_house_value' in num_cols:
     num_cols = num_cols.drop('median_house_value')
 
-print("2. Hapus Outlier (Sebelum Scaling)")
+print("2. Hapus Outlier")
 def remove_outliers_iqr(df: pd.DataFrame, cols: list) -> pd.DataFrame:
     df_clean = df.copy()
     for col in cols:
@@ -37,9 +45,10 @@ encoder = OneHotEncoder(sparse_output=False, handle_unknown="ignore")
 encoded_data = encoder.fit_transform(df[['ocean_proximity']])
 encoded_cols = encoder.get_feature_names_out(['ocean_proximity'])
 df_encoded = pd.DataFrame(encoded_data, columns=encoded_cols, index=df.index)
-
 df = pd.concat([df.drop('ocean_proximity', axis=1), df_encoded], axis=1)
 
 print("5. Simpan File")
-df.to_csv(r'preprocessing\housing_preprocessing\housing_clean_auto.csv', index=False)
+# Menggunakan path absolut yang sudah dibuat di awal
+df.to_csv(output_file, index=False)
+print(f"File disimpan di: {output_file}")
 print("Seluruh Proses Selesai!")
