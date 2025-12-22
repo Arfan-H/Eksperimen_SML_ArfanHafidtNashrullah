@@ -3,16 +3,19 @@ import os
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-raw_path = os.path.join(base_dir, "raw", "housing.csv")
-output_dir = os.path.join(base_dir, "preprocessing", "housing_preprocessing")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, os.pardir))
+
+raw_path = os.path.join(project_root, "raw", "housing.csv")
+output_dir = os.path.join(current_dir, "housing_preprocessing")
 output_file = os.path.join(output_dir, "housing_clean_auto.csv")
 
 os.makedirs(output_dir, exist_ok=True)
 
-# 1. Load Data
-df = pd.read_csv(raw_path)
+if not os.path.exists(raw_path):
+    raise FileNotFoundError(f"File tidak ditemukan di: {raw_path}")
 
+df = pd.read_csv(raw_path)
 print("1. Imputasi & Hapus Duplikat")
 imputer = SimpleImputer(strategy='mean')
 df['total_bedrooms'] = imputer.fit_transform(df[['total_bedrooms']])
