@@ -1,10 +1,9 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
-import os
 
 
-df = pd.read_csv(r".\raw\housing.csv")
+df = pd.read_csv("raw/housing.csv")
 
 print("1. Imputasi & Hapus Duplikat")
 imputer = SimpleImputer(strategy='mean')

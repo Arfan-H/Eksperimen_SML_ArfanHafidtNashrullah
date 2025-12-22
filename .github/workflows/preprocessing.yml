@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12.10"
 
       - name: Install dependencies
         run: |
@@ -28,12 +28,12 @@ jobs:
 
       - name: Run preprocessing automation
         run: |
-          python preprocessing\prepocessing.py
+          python preprocessing/prepocessing.py.py
 
       - name: Commit processed dataset
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add preprocessing/housing_preprocessing/housing_clean.csv
+          git add preprocessing/housing_preprocessing/housing_clean_auto.csv
           git commit -m "Auto-update preprocessed dataset" || echo "No changes to commit"
           git push
