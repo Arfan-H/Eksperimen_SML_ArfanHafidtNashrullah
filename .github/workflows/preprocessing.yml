@@ -28,7 +28,7 @@ jobs:
 
       - name: Run preprocessing automation
         run: |
-          python preprocessing/prepocessing.py
+          python preprocessing\prepocessing.py
 
       - name: Commit processed dataset
         run: |
